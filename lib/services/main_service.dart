@@ -1,6 +1,7 @@
 import 'package:scoped_model/scoped_model.dart';
+import 'package:testapp1/services/auth_service.dart';
 import 'package:testapp1/services/product_service.dart';
 
-class MainService extends Model with ProductService{
+class MainService extends Model with ProductService,AuthService{
   
 }

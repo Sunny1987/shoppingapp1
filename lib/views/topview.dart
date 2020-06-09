@@ -11,6 +11,7 @@ import 'package:testapp1/widgets/searchbar_widget.dart';
 class TopPage extends StatefulWidget {
   static const String id = 'TopPage';
 
+
   @override
   _TopPageState createState() => _TopPageState();
 }
@@ -25,10 +26,12 @@ class _TopPageState extends State<TopPage>
         print(model.products);
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.grey,
+            backgroundColor: Colors.red,
             elevation: 0.0,
             actions: <Widget>[
-              IconButton(icon: Icon(Icons.settings_power), onPressed: () {})
+              IconButton(icon: Icon(Icons.settings_power), onPressed: () {
+                model.signOut();
+              })
             ],
           ),
           drawer: MyDrawer(),

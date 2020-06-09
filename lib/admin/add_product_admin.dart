@@ -128,7 +128,7 @@ class _AddProductState extends State<AddProduct> {
       print('category: $category');
 
       //call the firebase method
-      var status = await model.uploadAllDataToFirebase(
+      var status = await model.uploadAllProductDataToFirebase(
           model.imageFile, name, description, price, discount,category);
 
       if (status) {

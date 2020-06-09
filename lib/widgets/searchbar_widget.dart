@@ -15,6 +15,9 @@ class SearchBar extends StatelessWidget {
         elevation: 5.0,
         borderRadius: BorderRadius.circular(40.0),
         child: TextField(
+          onChanged: (String value) {
+                
+          },
           decoration: InputDecoration(
               hintText: 'Search for saree',
               suffixIcon: Icon(Icons.search),

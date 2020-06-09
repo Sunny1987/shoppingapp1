@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:testapp1/services/main_service.dart';
 import 'package:testapp1/views/blouseview.dart';
 import 'package:testapp1/views/sareeview.dart';
 import 'package:testapp1/views/topview.dart';
@@ -6,6 +8,11 @@ import 'package:testapp1/views/trouserview.dart';
 import 'package:testapp1/widgets/drawer_widget.dart';
 
 class HomePageScreen extends StatefulWidget {
+  static const String id = 'HomePage';
+  final MainService model;
+  HomePageScreen({this.model});
+  
+
   @override
   _HomePageScreenState createState() => _HomePageScreenState();
 }
@@ -16,10 +23,12 @@ class _HomePageScreenState extends State<HomePageScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.grey,
+          backgroundColor: Colors.red,
           elevation: 0.0,
           actions: <Widget>[
-            IconButton(icon: Icon(Icons.settings_power), onPressed: () {})
+            IconButton(icon: Icon(Icons.settings_power), onPressed: () {
+              widget.model.signOut();
+            })
           ],
         ),
         drawer: MyDrawer(),

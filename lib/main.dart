@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:testapp1/admin/add_product_admin.dart';
 import 'package:testapp1/admin/image_capture.dart';
+import 'package:testapp1/pages/authentication_page.dart';
 import 'package:testapp1/pages/homepage_page.dart';
-import 'package:testapp1/pages/product_details.dart';
+import 'package:testapp1/pages/product_details_page.dart';
+import 'package:testapp1/services/auth_service.dart';
 import 'package:testapp1/services/main_service.dart';
 import 'package:testapp1/views/blouseview.dart';
 import 'package:testapp1/views/sareeview.dart';
 import 'package:testapp1/views/topview.dart';
 import 'package:testapp1/views/trouserview.dart';
+import './views/wrapper.dart';
 //import 'package:testapp1/views/homepage.dart';
 
 void main() {
@@ -30,7 +34,9 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: HomePageScreen(),
+        home: StreamProvider.value(
+          value: AuthService().user,
+          child: Wrapper()),
         routes: {
           AddProduct.id: (context) => AddProduct(),
           ImageCapture.id : (context) => ImageCapture(),
@@ -38,7 +44,8 @@ class MyApp extends StatelessWidget {
           TopPage.id : (context) => TopPage(),
           BlousePage.id : (context) => BlousePage(),
           TrouserPage.id : (context) => TrouserPage(),
-          ProductDetailPage.id : (context) => ProductDetailPage()
+          ProductDetailPage.id : (context) => ProductDetailPage(),
+          HomePageScreen.id : (context) => HomePageScreen()
         },
       ),
     );

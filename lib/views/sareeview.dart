@@ -24,10 +24,12 @@ class _SareePageState extends State<SareePage>
         print(model.products);
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.grey,
+            backgroundColor: Colors.red,
             elevation: 0.0,
             actions: <Widget>[
-              IconButton(icon: Icon(Icons.settings_power), onPressed: () {})
+              IconButton(icon: Icon(Icons.settings_power), onPressed: () {
+                model.signOut();
+              })
             ],
           ),
           drawer: MyDrawer(),

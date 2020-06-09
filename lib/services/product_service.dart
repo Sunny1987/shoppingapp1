@@ -2,13 +2,13 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
+//import 'package:flutter/foundation.dart';
 //import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:testapp1/models/product_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../data/product_data.dart';
+//import '../data/product_data.dart';
 
 class ProductService extends Model {
   List<Product> _products = [];
@@ -35,6 +35,7 @@ class ProductService extends Model {
     return snapshot;
   }
 
+
   void setImageFile(File image) {
     _imageFile = image;
     notifyListeners();
@@ -44,7 +45,7 @@ class ProductService extends Model {
     return _imageFile;
   }
 
-  Future<bool> uploadAllDataToFirebase(File imageFile, String name,
+  Future<bool> uploadAllProductDataToFirebase(File imageFile, String name,
       String description, String price, String discount, String category) async {
     //call uploadImage function
     _isLoading = true;
@@ -54,7 +55,7 @@ class ProductService extends Model {
     print(_isLoading);
 
     var imageLocation = await uploadImage(imageFile);
-    var status = await uploadToDatabase(
+    var status = await uploadProductToDatabase(
         imageLocation, name, description, price, discount,category);
     _isLoading = false;
     if (status) {
@@ -84,7 +85,7 @@ class ProductService extends Model {
     }
   }
 
-  Future<bool> uploadToDatabase(var imageLocation, String name,
+  Future<bool> uploadProductToDatabase(var imageLocation, String name,
       String description, String price, String discount,String category) async {
     try {
       // imageLocation.then((str) async{
@@ -109,4 +110,6 @@ class ProductService extends Model {
       return Future.value(false);
     }
   }
+
+
 }

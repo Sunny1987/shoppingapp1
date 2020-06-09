@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testapp1/widgets/drawer_widget.dart';
 
 class ProductDetailPage extends StatefulWidget {
   static const String id = 'ProductDetailPage';
@@ -20,6 +21,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+            backgroundColor: Colors.red,
+            elevation: 0.0,
+            actions: <Widget>[
+              IconButton(icon: Icon(Icons.settings_power), onPressed: () {})
+            ],
+          ),
+          drawer: MyDrawer(),
         body: Container(
           padding: EdgeInsets.symmetric(horizontal: 10.0),
           child: ListView(

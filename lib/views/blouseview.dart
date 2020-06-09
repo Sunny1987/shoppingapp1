@@ -10,6 +10,7 @@ import 'package:testapp1/widgets/searchbar_widget.dart';
 
 class BlousePage extends StatefulWidget {
   static const String id = 'BlousePage';
+  
 
   @override
   _BlousePageState createState() => _BlousePageState();
@@ -25,10 +26,12 @@ class _BlousePageState extends State<BlousePage>
         print(model.products);
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.grey,
+            backgroundColor: Colors.red,
             elevation: 0.0,
             actions: <Widget>[
-              IconButton(icon: Icon(Icons.settings_power), onPressed: () {})
+              IconButton(icon: Icon(Icons.settings_power), onPressed: () {
+                model.signOut();
+              })
             ],
           ),
           drawer: MyDrawer(),
