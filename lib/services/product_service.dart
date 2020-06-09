@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 //import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:testapp1/models/product_model.dart';
@@ -29,6 +30,7 @@ class ProductService extends Model {
 
     Stream<QuerySnapshot> snapshot =
          Firestore.instance.collection('sarees').snapshots();
+         notifyListeners();
 
     return snapshot;
   }
@@ -43,7 +45,7 @@ class ProductService extends Model {
   }
 
   Future<bool> uploadAllDataToFirebase(File imageFile, String name,
-      String description, String price, String discount) async {
+      String description, String price, String discount, String category) async {
     //call uploadImage function
     _isLoading = true;
 
@@ -53,7 +55,7 @@ class ProductService extends Model {
 
     var imageLocation = await uploadImage(imageFile);
     var status = await uploadToDatabase(
-        imageLocation, name, description, price, discount);
+        imageLocation, name, description, price, discount,category);
     _isLoading = false;
     if (status) {
       //_isLoading = false;
@@ -83,7 +85,7 @@ class ProductService extends Model {
   }
 
   Future<bool> uploadToDatabase(var imageLocation, String name,
-      String description, String price, String discount) async {
+      String description, String price, String discount,String category) async {
     try {
       // imageLocation.then((str) async{
       var ref = await FirebaseStorage().ref().child(imageLocation);
@@ -92,9 +94,11 @@ class ProductService extends Model {
       await Firestore.instance.collection('sarees').document().setData({
         'name': name,
         'description': description,
+        'category': category,
         'price': price,
         'discount': discount,
-        'imageurl': imageString
+        'imageurl': imageString,
+        'createdAt' : FieldValue.serverTimestamp()
       });
       // });
 

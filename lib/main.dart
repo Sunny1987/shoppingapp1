@@ -2,8 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:testapp1/admin/add_product_admin.dart';
 import 'package:testapp1/admin/image_capture.dart';
+import 'package:testapp1/pages/homepage_page.dart';
+import 'package:testapp1/pages/product_details.dart';
 import 'package:testapp1/services/main_service.dart';
-import 'package:testapp1/views/homepage.dart';
+import 'package:testapp1/views/blouseview.dart';
+import 'package:testapp1/views/sareeview.dart';
+import 'package:testapp1/views/topview.dart';
+import 'package:testapp1/views/trouserview.dart';
+//import 'package:testapp1/views/homepage.dart';
 
 void main() {
   runApp(MyApp());
@@ -24,10 +30,15 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: HomePage(),
+        home: HomePageScreen(),
         routes: {
           AddProduct.id: (context) => AddProduct(),
-          ImageCapture.id : (context) => ImageCapture()
+          ImageCapture.id : (context) => ImageCapture(),
+          SareePage.id : (context) => SareePage(),
+          TopPage.id : (context) => TopPage(),
+          BlousePage.id : (context) => BlousePage(),
+          TrouserPage.id : (context) => TrouserPage(),
+          ProductDetailPage.id : (context) => ProductDetailPage()
         },
       ),
     );

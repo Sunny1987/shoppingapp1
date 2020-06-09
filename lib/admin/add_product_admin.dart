@@ -14,7 +14,7 @@ class AddProduct extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProduct> {
-  String name, description, price, discount;
+  String name, description, price, discount,category= 'Saree';
   GlobalKey<FormState> _globalFormKey = GlobalKey();
   GlobalKey<ScaffoldState> _scaffoldStateKey = GlobalKey();
 
@@ -85,6 +85,7 @@ class _AddProductState extends State<AddProduct> {
                           _buildTextField(
                             'Saree Description',
                           ),
+                         _dropDownData(),
                           _buildTextField(
                             'Saree price',
                           ),
@@ -124,10 +125,11 @@ class _AddProductState extends State<AddProduct> {
       print('price: $price');
       print('discount: $discount');
       print('upload pressed');
+      print('category: $category');
 
       //call the firebase method
       var status = await model.uploadAllDataToFirebase(
-          model.imageFile, name, description, price, discount);
+          model.imageFile, name, description, price, discount,category);
 
       if (status) {
         SnackBar snackBar =
@@ -184,6 +186,40 @@ class _AddProductState extends State<AddProduct> {
       ),
     );
   }
+
+  Widget _dropDownData(){
+
+    //String category1 = 'Sarees';
+    return  Container(
+      margin: EdgeInsets.symmetric(horizontal: 30.0),
+      child: DropdownButton<String>(
+        value: category,
+        items: <String>['Saree','Blouse','Trouser','Top'].map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+              );
+        }).toList(), 
+        icon: Icon(Icons.arrow_downward),
+        iconSize: 20.0,
+        elevation: 10,
+        style: TextStyle(
+          color: Colors.black54,
+          fontSize: 18.0
+        ),
+      //   underline: Container(
+      //   height: 2,
+      //   color: Colors.grey,
+      // ),
+        onChanged: (String newvalue) {
+          setState(() {
+            category = newvalue;
+          });
+            
+        }),
+    );
+  }
+
 }
 
 class UploadButton extends StatelessWidget {
