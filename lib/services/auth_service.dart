@@ -8,7 +8,18 @@ class AuthService extends Model {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   AppUser _userFromFirebase(FirebaseUser user) {
-    return user != null ? AppUser(uid: user.uid) : null;
+    if(user!= null){
+       var appuser = AppUser(uid: user.uid);
+       getUsersData(appuser);
+      return appuser;
+
+      //getUsersData(App)
+
+    }else{
+      return null;
+    }
+    //return user != null ? AppUser(uid: user.uid) : null;
+    // return AppUser();
   }
 
   Stream<AppUser> get user {
@@ -65,7 +76,8 @@ class AuthService extends Model {
       await Firestore.instance.collection('users').document().setData({
         'id': uid,
         'username': username,
-        'createdAt': FieldValue.serverTimestamp()
+        'createdAt': FieldValue.serverTimestamp(),
+        
       });
       // });
 
@@ -76,6 +88,16 @@ class AuthService extends Model {
       return Future.value(false);
     }
   }
+
+   getUsersData(AppUser user)  {
+     Firestore.instance.collection('users').where('id',isEqualTo: '${user.uid}').getDocuments().then((QuerySnapshot snapshot) {
+        snapshot.documents.forEach((element) { 
+          //print(element.data['username']);
+          user.username = element.data['username'];
+        });
+    });
+  }
+
 
 
 }

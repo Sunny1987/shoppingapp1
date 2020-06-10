@@ -13,7 +13,7 @@ class AuthenticatePage extends StatefulWidget {
 
 class _AuthenticatePageState extends State<AuthenticatePage> {
   String _email, _username, _password;
-  bool _isToggleVisibility = false;
+  bool _isToggleVisibility = true;
   bool _isLogin = true;
   bool _isLoading = false;
 
@@ -55,7 +55,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
   @override
   Widget build(BuildContext context) {
     return _isLoading?
-    SpinKitCubeGrid(color: Colors.red,size: 70.0,):
+    SpinKitCubeGrid(color: Colors.red,size: 70.0,duration: Duration(milliseconds: 900),):
      SafeArea(
         child: GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),

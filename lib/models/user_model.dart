@@ -4,6 +4,7 @@ class AppUser{
 
   String uid;
   String username;
+  
   DocumentReference refernce;
 
   AppUser({this.uid,this.username});

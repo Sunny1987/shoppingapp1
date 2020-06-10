@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:testapp1/admin/add_product_admin.dart';
 import 'package:testapp1/admin/image_capture.dart';
-import 'package:testapp1/pages/authentication_page.dart';
+//import 'package:testapp1/pages/authentication_page.dart';
 import 'package:testapp1/pages/homepage_page.dart';
 import 'package:testapp1/pages/product_details_page.dart';
 import 'package:testapp1/services/auth_service.dart';
@@ -27,26 +27,27 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScopedModel<MainService>(
       model: mainService,
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
+      child: StreamProvider.value(
+        value: AuthService().user,
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+          ),
+          home: Wrapper(),
+          routes: {
+            AddProduct.id: (context) => AddProduct(),
+            ImageCapture.id: (context) => ImageCapture(),
+            SareePage.id: (context) => SareePage(),
+            TopPage.id: (context) => TopPage(),
+            BlousePage.id: (context) => BlousePage(),
+            TrouserPage.id: (context) => TrouserPage(),
+            ProductDetailPage.id: (context) => ProductDetailPage(),
+            HomePageScreen.id: (context) => HomePageScreen()
+          },
         ),
-        home: StreamProvider.value(
-          value: AuthService().user,
-          child: Wrapper()),
-        routes: {
-          AddProduct.id: (context) => AddProduct(),
-          ImageCapture.id : (context) => ImageCapture(),
-          SareePage.id : (context) => SareePage(),
-          TopPage.id : (context) => TopPage(),
-          BlousePage.id : (context) => BlousePage(),
-          TrouserPage.id : (context) => TrouserPage(),
-          ProductDetailPage.id : (context) => ProductDetailPage(),
-          HomePageScreen.id : (context) => HomePageScreen()
-        },
       ),
     );
   }
