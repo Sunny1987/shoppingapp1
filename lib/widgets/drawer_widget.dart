@@ -1,9 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:testapp1/admin/add_product_admin.dart';
 import 'package:testapp1/models/user_model.dart';
-import 'package:testapp1/services/main_service.dart';
+import 'package:testapp1/views/favouriteview.dart';
+//import 'package:testapp1/pages/favourite_page.dart';
+//import 'package:testapp1/views/favourite.dart';
+//import 'package:testapp1/services/main_service.dart';
 
 class MyDrawer extends StatefulWidget {
 
@@ -24,19 +27,12 @@ class _MyDrawerState extends State<MyDrawer> {
     super.initState();
   }
 
-  // @override
-  // void initState() async {
-  //   final user = Provider.of<AppUser>(context);
-  //   await widget.model.getUsersData(user);
-  //   super.initState();
-  // }
   @override
   Widget build(BuildContext context) {
     
     //print(user.uid);
     user= Provider.of<AppUser>(context);
     print(user.username);
-    //widget.model.getUsersData(user);
     
     return Drawer(
       child: Column(
@@ -93,7 +89,9 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => Favourite()));
+            },
             child: ListTile(
               leading: Icon(Icons.favorite, color: Colors.blueAccent),
               title: Text('My Favourites'),

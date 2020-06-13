@@ -8,9 +8,10 @@ class ProductDetailPage extends StatefulWidget {
   final String price;
   final String discount;
   final String image;
+  final bool isFav;
 
   ProductDetailPage(
-      {this.name, this.description, this.price, this.discount, this.image});
+      {this.name, this.description, this.price, this.discount, this.image, this.isFav});
 
   @override
   _ProductDetailPageState createState() => _ProductDetailPageState();
@@ -58,7 +59,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   )),
 
                   Container(
-                    child: Text('${int.parse(widget.price) +int.parse(widget.discount)}',
+                    child: Text('₹${int.parse(widget.price) +int.parse(widget.discount)}',
                     style:TextStyle(
                       decoration: TextDecoration.lineThrough,
                       fontSize: 16.0,
@@ -66,7 +67,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   ),
                   Container(
                       child: Text(
-                    widget.price,
+                    '₹${widget.price}',
                     style: TextStyle(
                         fontSize: 17.0,
                         fontWeight: FontWeight.bold,
@@ -85,6 +86,19 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   Container(
                     child: Text('Quantity'),
                   ),
+                  Container(
+                    width: 150.0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        IconButton(icon: Icon(Icons.add), onPressed: () {}),
+                        //SizedBox(height: 10.0),
+                        Text('0'),
+                        //SizedBox(height: 10.0),
+                        IconButton(icon: Icon(Icons.remove), onPressed: () {})
+                      ],
+                    ),
+                  )
 
 
 
@@ -113,7 +127,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
                   }),
 
-                  IconButton(icon: Icon(Icons.favorite_border), onPressed: () {
+                  IconButton(icon: widget.isFav? Icon(Icons.favorite): Icon(Icons.favorite_border) , onPressed: () {
 
                   })
                 ],

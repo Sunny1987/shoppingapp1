@@ -8,14 +8,15 @@ class AuthService extends Model {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   AppUser _userFromFirebase(FirebaseUser user) {
-    if(user!= null){
-       var appuser = AppUser(uid: user.uid);
-       getUsersData(appuser);
+    if (user != null) {
+      var appuser = AppUser(uid: user.uid);
+      getUsersData(appuser);
+      getFavourites(appuser);
       return appuser;
 
       //getUsersData(App)
 
-    }else{
+    } else {
       return null;
     }
     //return user != null ? AppUser(uid: user.uid) : null;
@@ -77,7 +78,6 @@ class AuthService extends Model {
         'id': uid,
         'username': username,
         'createdAt': FieldValue.serverTimestamp(),
-        
       });
       // });
 
@@ -89,15 +89,40 @@ class AuthService extends Model {
     }
   }
 
-   getUsersData(AppUser user)  {
-     Firestore.instance.collection('users').where('id',isEqualTo: '${user.uid}').getDocuments().then((QuerySnapshot snapshot) {
-        snapshot.documents.forEach((element) { 
-          //print(element.data['username']);
-          user.username = element.data['username'];
-        });
+  getUsersData(AppUser user) {
+    Firestore.instance
+        .collection('users')
+        .where('id', isEqualTo: '${user.uid}')
+        .getDocuments()
+        .then((QuerySnapshot snapshot) {
+      snapshot.documents.forEach((element) {
+        //print(element.data['username']);
+        user.username = element.data['username'];
+      });
     });
   }
 
+  getFavourites(AppUser user) {
+    Firestore.instance
+        .collection('users')
+        .where('id', isEqualTo: '${user.uid}')
+        .getDocuments();
+  }
 
-
+  void uploadUserFavourites(String uid, String name, String description,
+      String price, String discount, String image) async {
+    try {
+      await Firestore.instance.collection('user_favourites').document().setData({
+        'id': uid,
+        'name': name,
+        'description': description,
+        'price': price,
+        'discount': discount,
+        'image': image,
+        'createdAt': FieldValue.serverTimestamp()
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 }

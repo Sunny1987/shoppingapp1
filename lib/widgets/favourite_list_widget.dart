@@ -1,30 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-//import 'package:provider/provider.dart';
-import 'package:testapp1/models/product_model.dart';
-//import 'package:testapp1/models/user_model.dart';
+import 'package:testapp1/models/favoutites_model.dart';
+// import 'package:testapp1/models/product_model.dart';
 import 'package:testapp1/widgets/product_card.dart';
 
-class ProductListView extends StatefulWidget {
+class MyFavouriteListView extends StatefulWidget {
   
-  final String category;
-  ProductListView({this.category});
+  final String uid;
+  MyFavouriteListView({this.uid});
 
   @override
-  _ProductListViewState createState() => _ProductListViewState();
+  _MyFavouriteListViewState createState() => _MyFavouriteListViewState();
 }
 
-class _ProductListViewState extends State<ProductListView> {
+class _MyFavouriteListViewState extends State<MyFavouriteListView> {
   @override
   Widget build(BuildContext context) {
     //print('index:${widget.index}');
+
    
-      
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance
-          .collection('sarees')
-          .where('category',isEqualTo: '${widget.category}')
+          .collection('user_favourites')
+          .where('id',isEqualTo: '${widget.uid}')
           .orderBy('createdAt', descending: true)
           .snapshots(),
       builder: (BuildContext context, snapshot) {
@@ -58,15 +57,13 @@ Widget _buildSnapshot(BuildContext context, List<DocumentSnapshot> snapshot) {
 }
 
 Widget _callProductCard(DocumentSnapshot data) {
-
-
-  final product = Product.fromSnapshot(data);
+  final favourites = Favourites.fromSnapshot(data);
 
   return ProductCard(
-    name: product.name,
-    description: product.description,
-    price: product.price,
-    discount: product.discount,
-    image: product.image,
+    name: favourites.name,
+    description: favourites.description,
+    price: favourites.price,
+    discount: favourites.discount,
+    image: favourites.image,
   );
 }
