@@ -1,21 +1,27 @@
+//import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:firebase_storage/firebase_storage.dart';
 import 'package:scoped_model/scoped_model.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
+//import 'package:testapp1/models/favoutites_model.dart';
+//import 'package:testapp1/views/favouriteview.dart';
 import '../models/user_model.dart';
 
 class AuthService extends Model {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  //final prefs = SharedPreferences.getInstance();
+
+  AppUser _user;
 
   AppUser _userFromFirebase(FirebaseUser user) {
     if (user != null) {
-      var appuser = AppUser(uid: user.uid);
+      AppUser appuser = AppUser(uid: user.uid);
+
       getUsersData(appuser);
-      getFavourites(appuser);
+      //getFavourites(appuser);
       return appuser;
-
-      //getUsersData(App)
-
     } else {
       return null;
     }
@@ -25,6 +31,7 @@ class AuthService extends Model {
 
   Stream<AppUser> get user {
     notifyListeners();
+    print('_user: $_user ');
     return _auth.onAuthStateChanged.map((user) => _userFromFirebase(user));
   }
 
@@ -102,17 +109,37 @@ class AuthService extends Model {
     });
   }
 
-  getFavourites(AppUser user) {
-    Firestore.instance
-        .collection('users')
+  Future<QuerySnapshot> getFavourites(AppUser user) async {
+    return await Firestore.instance
+        .collection('user_favourites')
         .where('id', isEqualTo: '${user.uid}')
         .getDocuments();
+  }
+
+  void firestoreAction(bool isFav, String docId, String uid, String name,
+      String description, String price, String discount, String image) async {
+    if (isFav) {
+      await uploadUserFavourites(
+          uid, name, description, price, discount, image);
+    } else {
+      await deleteUserFavourites(docId);
+    }
+  }
+
+  void deleteUserFavourites(String docId) async {
+    await Firestore.instance
+        .collection('user_favourites')
+        .document(docId)
+        .delete();
   }
 
   void uploadUserFavourites(String uid, String name, String description,
       String price, String discount, String image) async {
     try {
-      await Firestore.instance.collection('user_favourites').document().setData({
+      await Firestore.instance
+          .collection('user_favourites')
+          .document()
+          .setData({
         'id': uid,
         'name': name,
         'description': description,

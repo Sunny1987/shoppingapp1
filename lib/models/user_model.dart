@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AppUser{
 
+
   String uid;
   String username;
+  
   
   DocumentReference refernce;
 

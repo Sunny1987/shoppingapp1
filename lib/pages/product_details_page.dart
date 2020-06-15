@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:testapp1/models/favoutites_model.dart';
+import 'package:testapp1/models/user_model.dart';
+import 'package:testapp1/services/main_service.dart';
 import 'package:testapp1/widgets/drawer_widget.dart';
 
 class ProductDetailPage extends StatefulWidget {
@@ -9,27 +12,51 @@ class ProductDetailPage extends StatefulWidget {
   final String discount;
   final String image;
   final bool isFav;
+  final MainService model;
+  final Map<String, Favourites> map;
+  final AppUser user;
 
   ProductDetailPage(
-      {this.name, this.description, this.price, this.discount, this.image, this.isFav});
+      {this.name,
+      this.description,
+      this.price,
+      this.discount,
+      this.image,
+      this.isFav,
+      this.map,
+      this.model,
+      this.user});
 
   @override
   _ProductDetailPageState createState() => _ProductDetailPageState();
 }
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
+  bool _isFav = false;
+  String docId = '';
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isFav == true) {
+      _isFav = true;
+    } else {
+      _isFav = false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-            backgroundColor: Colors.red,
-            elevation: 0.0,
-            actions: <Widget>[
-              IconButton(icon: Icon(Icons.settings_power), onPressed: () {})
-            ],
-          ),
-          drawer: MyDrawer(),
+          backgroundColor: Colors.red,
+          elevation: 0.0,
+          actions: <Widget>[
+            IconButton(icon: Icon(Icons.settings_power), onPressed: () {})
+          ],
+        ),
+        drawer: MyDrawer(),
         body: Container(
           padding: EdgeInsets.symmetric(horizontal: 10.0),
           child: ListView(
@@ -55,15 +82,16 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   Container(
                       child: Text(
                     widget.name,
-                    style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold),
+                    style:
+                        TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold),
                   )),
-
                   Container(
-                    child: Text('₹${int.parse(widget.price) +int.parse(widget.discount)}',
-                    style:TextStyle(
-                      decoration: TextDecoration.lineThrough,
-                      fontSize: 16.0,
-                      color: Colors.grey)),
+                    child: Text(
+                        '₹${int.parse(widget.price) + int.parse(widget.discount)}',
+                        style: TextStyle(
+                            decoration: TextDecoration.lineThrough,
+                            fontSize: 16.0,
+                            color: Colors.grey)),
                   ),
                   Container(
                       child: Text(
@@ -79,7 +107,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 height: 20.0,
                 color: Colors.grey,
               ),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -99,16 +126,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       ],
                     ),
                   )
-
-
-
                 ],
               ),
               Divider(
                 height: 20.0,
                 color: Colors.grey,
               ),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -117,22 +140,39 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     child: FlatButton(
                       onPressed: () {},
                       color: Colors.red,
-                      child: Text('Buy',style: TextStyle(
-                        color: Colors.white
-                      ),),
+                      child: Text(
+                        'Buy',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
+                  IconButton(icon: Icon(Icons.shopping_cart), onPressed: () {}),
+                  IconButton(
+                      icon: _isFav
+                          ? Icon(Icons.favorite,color: Colors.red,)
+                          : Icon(Icons.favorite_border,color: Colors.red,),
+                      onPressed: () {
+                        setState(() {
+                          _isFav = !_isFav;
+                          widget.map.forEach((key, value) {
+                            if (value.image == widget.image) {
+                              docId = key;
+                            }
+                          });
+                        });
 
-                  IconButton(icon: Icon(Icons.shopping_cart), onPressed: () {
-
-                  }),
-
-                  IconButton(icon: widget.isFav? Icon(Icons.favorite): Icon(Icons.favorite_border) , onPressed: () {
-
-                  })
+                        widget.model.firestoreAction(
+                            _isFav,
+                            docId,
+                            widget.user.uid,
+                            widget.name,
+                            widget.description,
+                            widget.price,
+                            widget.discount,
+                            widget.image);
+                      })
                 ],
               ),
-
               Divider(
                 height: 20.0,
                 color: Colors.grey,
@@ -140,19 +180,15 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               SizedBox(
                 height: 10.0,
               ),
-
               Container(
-                child: Text('Product Description',style: TextStyle(
-                  fontSize: 17.0,
-                  fontWeight: FontWeight.bold
-                )),
+                child: Text('Product Description',
+                    style:
+                        TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold)),
               ),
               SizedBox(
                 height: 10.0,
               ),
-
               Container(child: Text(widget.description)),
-
               Divider(
                 height: 20.0,
                 color: Colors.grey,
@@ -160,14 +196,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               SizedBox(
                 height: 10.0,
               ),
-
               Container(
-                child: Text('Similar Products',style: TextStyle(
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.bold
-                )),
+                child: Text('Similar Products',
+                    style:
+                        TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
               ),
-
             ],
           ),
         ),

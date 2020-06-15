@@ -27,10 +27,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScopedModel<MainService>(
       model: mainService,
-      child: MultiProvider(
-        providers: [
-          StreamProvider.value(value: AuthService().user),
-        ],
+      child: StreamProvider.value(
+        value: AuthService().user,
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',

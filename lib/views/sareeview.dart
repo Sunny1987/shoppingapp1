@@ -22,52 +22,65 @@ class _SareePageState extends State<SareePage>
     return SafeArea(child: ScopedModelDescendant<MainService>(
       builder: (BuildContext context, Widget child, MainService model) {
         print(model.products);
-        return Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.red,
-            elevation: 0.0,
-            actions: <Widget>[
-              IconButton(icon: Icon(Icons.settings_power), onPressed: () {
-                model.signOut();
-              })
-            ],
-          ),
-          drawer: MyDrawer(),
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(
-                height: 20.0,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    width: 140,
-                  ),
-                  Text(
-                    'Sarees',
-                    style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: 22.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              SearchBar(),
-              SizedBox(
-                height: 20.0,
-              ),
-              Expanded(
-                child: ProductListView(
-                  category: 'Saree',
+        return RefreshIndicator(
+          onRefresh: () {
+            setState(() {
+              
+            });
+            return Future.delayed(Duration(milliseconds: 3000));
+          },
+          child: Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.red,
+              elevation: 0.0,
+              // leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: null),
+              actions: <Widget>[
+                //IconButton(icon: Icon(Icons.arrow_back), onPressed: null),
+
+                IconButton(
+                    icon: Icon(Icons.settings_power),
+                    onPressed: () {
+                      model.signOut();
+                    })
+              ],
+            ),
+            drawer: MyDrawer(),
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(
+                  height: 20.0,
                 ),
-              ),
-              SizedBox(height: 10.0),
-            ],
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      width: 140,
+                    ),
+                    Text(
+                      'Sarees',
+                      style: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 22.0,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                SearchBar(),
+                SizedBox(
+                  height: 20.0,
+                ),
+                Expanded(
+                  child: ProductListView(
+                    category: 'Saree',
+                  ),
+                ),
+                SizedBox(height: 10.0),
+              ],
+            ),
           ),
         );
       },
