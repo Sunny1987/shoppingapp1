@@ -71,7 +71,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   fontSize:18.0,
                 ),))),
             SizedBox(width: 60.0),
-            IconButton(icon: Icon(Icons.settings_power), onPressed: () {})
+            IconButton(icon: Icon(Icons.shopping_cart), onPressed: () {})
           ],
         ),
         drawer: MyDrawer(),

@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 
-class SearchBar extends StatelessWidget {
-  const SearchBar({
-    Key key,
-  }) : super(key: key);
+class SearchBar extends StatefulWidget {
+  // const SearchBar({
+  //   Key key,
+  // }) : super(key: key);
 
+  final String searchText;
+  SearchBar({this.searchText});
+
+  @override
+  _SearchBarState createState() => _SearchBarState();
+}
+
+class _SearchBarState extends State<SearchBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,7 +27,7 @@ class SearchBar extends StatelessWidget {
                 
           },
           decoration: InputDecoration(
-              hintText: 'Search for saree',
+              hintText: '${widget.searchText}',
               suffixIcon: Icon(Icons.search),
               border: InputBorder.none,
               contentPadding: EdgeInsets.symmetric(horizontal: 10.0,vertical: 5.0)

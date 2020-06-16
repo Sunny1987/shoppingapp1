@@ -1,0 +1,1 @@
+final String appTitle = 'Mother\s Collection';

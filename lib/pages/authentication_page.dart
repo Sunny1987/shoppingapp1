@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:scoped_model/scoped_model.dart';
 //import 'package:testapp1/pages/homepage_page.dart';
 import 'package:testapp1/services/main_service.dart';
+import '../style/mystrings.dart';
 
 class AuthenticatePage extends StatefulWidget {
   static const String id = 'AuthPage';
@@ -40,16 +41,25 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
         }
 
         print(response);
-        setState(() {
-          _isLoading = false;
-        });
+        // setState(() {
+        //   _isLoading = false;
+        // });
       }
     } catch (e) {
       print(e.toString());
-        setState(() {
+        // setState(() {
+        //   _isLoading = false;
+        // });
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+      super.didChangeDependencies();
+       setState(() {
           _isLoading = false;
         });
-    }
+
   }
 
   @override
@@ -71,7 +81,7 @@ class _AuthenticatePageState extends State<AuthenticatePage> {
                 children: <Widget>[
                   SizedBox(height: 140.0),
                   Center(
-                    child: Text('Saree Store',
+                    child: Text(appTitle,
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 20.0,
