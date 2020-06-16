@@ -10,6 +10,7 @@ import 'package:scoped_model/scoped_model.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
 import 'package:testapp1/models/favoutites_model.dart';
 import 'package:testapp1/models/product_model.dart';
+//import 'package:testapp1/models/product_model.dart';
 import 'package:testapp1/models/user_model.dart';
 //import 'package:testapp1/models/product_model.dart';
 //import 'package:testapp1/pages/product_details.dart';
@@ -18,32 +19,38 @@ import 'package:testapp1/services/main_service.dart';
 //import 'package:testapp1/views/favouriteview.dart';
 //import 'package:testapp1/models/product_model.dart';
 
-class ProductCard extends StatefulWidget {
+class ProductCardHorizontal extends StatefulWidget {
   final String name;
   final String description;
   final String price;
   final String discount;
   final String image;
   final String category;
+  //final Product product;
+  final String docID;
   //static DocumentSnapshot data;
 
-  ProductCard(
+  ProductCardHorizontal(
       {this.name,
       this.description,
       this.price,
       this.discount,
       this.image,
-      this.category});
+      this.category,
+      //this.product,
+      this.docID});
 
   @override
-  _ProductCardState createState() => _ProductCardState();
+  _ProductCardHorizontalState createState() => _ProductCardHorizontalState();
 }
 
-class _ProductCardState extends State<ProductCard> {
+class _ProductCardHorizontalState extends State<ProductCardHorizontal> {
   bool _isFav = false;
-  Map<String, Favourites> map;
+  Map<String, Favourites> horizontal_map;
   String docId = '';
-  Map<String, Product> product_map;
+  Map<String, Product> horizontal_product_map;
+  // final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+  //   new GlobalKey<RefreshIndicatorState>();
 
   getFav(
     QuerySnapshot snapshot,
@@ -55,7 +62,7 @@ class _ProductCardState extends State<ProductCard> {
     List list =
         docs.map((document) => Favourites.fromSnapshot(document)).toList();
 
-    map = Map.fromIterable(docs,
+    horizontal_map = Map.fromIterable(docs,
         key: (doc) => doc.documentID,
         value: (doc) => Favourites.fromSnapshot(doc));
 
@@ -77,14 +84,9 @@ class _ProductCardState extends State<ProductCard> {
   getAllDocIds(QuerySnapshot snapshot) {
     var docs = snapshot.documents;
 
-    product_map = Map.fromIterable(docs,
+    horizontal_product_map = Map.fromIterable(docs,
         key: (doc) => doc.documentID,
         value: (doc) => Product.fromSnapshot(doc));
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override
@@ -98,8 +100,8 @@ class _ProductCardState extends State<ProductCard> {
         .getDocuments();
 
     getFav(snapshot, user);
-    print('map from didChangeDependencies: $map');
-    map.forEach((key, value) {
+    print('map from didChangeDependencies: $horizontal_map');
+    horizontal_map.forEach((key, value) {
       if (value.image == widget.image) {
         setState(() {
           docId = key;
@@ -111,7 +113,7 @@ class _ProductCardState extends State<ProductCard> {
         await Firestore.instance.collection('sarees').getDocuments();
 
     getAllDocIds(prod_snapshots);
-    print('prod_map: $product_map');
+    print('prod_map: $horizontal_product_map');
   }
 
   @override
@@ -119,15 +121,14 @@ class _ProductCardState extends State<ProductCard> {
     AppUser user = Provider.of<AppUser>(context);
 
     //print('user : ${user.username}');
+    //print('map: $map');
 
     return ScopedModelDescendant<MainService>(
       builder: (BuildContext context, Widget child, MainService model) {
         //getFav(model, user);
-
         return GestureDetector(
           onTap: () {
-            //Navigator.pushNamed(context, ProductDetailPage.id);
-            product_map.forEach((key, value) {
+            horizontal_product_map.forEach((key, value) {
               if (value.image == widget.image) {
                 setState(() {
                   docId = key;
@@ -146,9 +147,9 @@ class _ProductCardState extends State<ProductCard> {
                           image: widget.image,
                           isFav: _isFav,
                           model: model,
-                          map: map,
-                          user: user,
+                          map: horizontal_map,
                           docID: docId,
+                          user: user,
                           category: widget.category,
                         )));
           },
@@ -187,7 +188,7 @@ class _ProductCardState extends State<ProductCard> {
                                     print(user.uid);
                                     setState(() {
                                       _isFav = !_isFav;
-                                      map.forEach((key, value) {
+                                      horizontal_map.forEach((key, value) {
                                         if (value.image == widget.image) {
                                           docId = key;
                                         }

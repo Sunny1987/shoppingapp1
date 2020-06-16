@@ -1,6 +1,7 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:testapp1/pages/homepage_page.dart';
 //import 'package:testapp1/models/product_model.dart';
 import 'package:testapp1/services/main_service.dart';
 import 'package:testapp1/widgets/drawer_widget.dart';
@@ -11,14 +12,11 @@ import 'package:testapp1/widgets/searchbar_widget.dart';
 class TopPage extends StatefulWidget {
   static const String id = 'TopPage';
 
-
   @override
   _TopPageState createState() => _TopPageState();
 }
 
-class _TopPageState extends State<TopPage>
-    with SingleTickerProviderStateMixin {
-
+class _TopPageState extends State<TopPage> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return SafeArea(child: ScopedModelDescendant<MainService>(
@@ -29,9 +27,19 @@ class _TopPageState extends State<TopPage>
             backgroundColor: Colors.red,
             elevation: 0.0,
             actions: <Widget>[
-              IconButton(icon: Icon(Icons.settings_power), onPressed: () {
-                model.signOut();
-              })
+              GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, HomePageScreen.id);
+                  },
+                  child: Center(child: Text('Mother\s Collection',style: TextStyle(
+                    fontSize:18.0,
+                  ),))),
+              SizedBox(width: 60.0),
+              IconButton(
+                  icon: Icon(Icons.settings_power),
+                  onPressed: () {
+                    model.signOut();
+                  })
             ],
           ),
           drawer: MyDrawer(),

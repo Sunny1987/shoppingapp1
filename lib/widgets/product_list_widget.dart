@@ -51,9 +51,9 @@ Widget _buildSnapshot(BuildContext context, List<DocumentSnapshot> snapshot) {
   // );
 
   return GridView.count(
-    crossAxisCount: 2,
-    children: snapshot.map((data) => _callProductCard(data)).toList(),
-  );
+  crossAxisCount: 2,
+  children: snapshot.map((data) => _callProductCard(data)).toList(),
+    );
 }
 
 Widget _callProductCard(DocumentSnapshot data) {
@@ -65,5 +65,7 @@ Widget _callProductCard(DocumentSnapshot data) {
     price: product.price,
     discount: product.discount,
     image: product.image,
+    category: product.category,
+    
   );
 }

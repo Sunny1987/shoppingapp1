@@ -1,6 +1,7 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:testapp1/pages/homepage_page.dart';
 //import 'package:testapp1/models/product_model.dart';
 import 'package:testapp1/services/main_service.dart';
 import 'package:testapp1/widgets/drawer_widget.dart';
@@ -29,6 +30,14 @@ class _BlousePageState extends State<BlousePage>
             backgroundColor: Colors.red,
             elevation: 0.0,
             actions: <Widget>[
+              GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, HomePageScreen.id);
+                    },
+                    child: Center(child: Text('Mother\'s Collection',style: TextStyle(
+                      fontSize:18.0,
+                    ),))),
+                SizedBox(width: 60.0),
               IconButton(icon: Icon(Icons.settings_power), onPressed: () {
                 model.signOut();
               })

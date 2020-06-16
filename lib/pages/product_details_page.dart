@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:testapp1/models/favoutites_model.dart';
 import 'package:testapp1/models/user_model.dart';
+import 'package:testapp1/pages/homepage_page.dart';
 import 'package:testapp1/services/main_service.dart';
+import 'package:testapp1/views/blouseview.dart';
+import 'package:testapp1/views/sareeview.dart';
+import 'package:testapp1/views/topview.dart';
+import 'package:testapp1/views/trouserview.dart';
 import 'package:testapp1/widgets/drawer_widget.dart';
+import 'package:testapp1/widgets/product_list_horiziontal_widget.dart';
 
 class ProductDetailPage extends StatefulWidget {
   static const String id = 'ProductDetailPage';
@@ -15,6 +21,8 @@ class ProductDetailPage extends StatefulWidget {
   final MainService model;
   final Map<String, Favourites> map;
   final AppUser user;
+  final String category;
+  final String docID;
 
   ProductDetailPage(
       {this.name,
@@ -25,7 +33,9 @@ class ProductDetailPage extends StatefulWidget {
       this.isFav,
       this.map,
       this.model,
-      this.user});
+      this.user,
+      this.docID,
+      this.category});
 
   @override
   _ProductDetailPageState createState() => _ProductDetailPageState();
@@ -33,7 +43,7 @@ class ProductDetailPage extends StatefulWidget {
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
   bool _isFav = false;
-  String docId = '';
+  String docId ='';
 
   @override
   void initState() {
@@ -53,6 +63,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           backgroundColor: Colors.red,
           elevation: 0.0,
           actions: <Widget>[
+            GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, HomePageScreen.id);
+                },
+                child: Center(child: Text('Mother\s Collection',style: TextStyle(
+                  fontSize:18.0,
+                ),))),
+            SizedBox(width: 60.0),
             IconButton(icon: Icon(Icons.settings_power), onPressed: () {})
           ],
         ),
@@ -149,8 +167,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   IconButton(icon: Icon(Icons.shopping_cart), onPressed: () {}),
                   IconButton(
                       icon: _isFav
-                          ? Icon(Icons.favorite,color: Colors.red,)
-                          : Icon(Icons.favorite_border,color: Colors.red,),
+                          ? Icon(
+                              Icons.favorite,
+                              color: Colors.red,
+                            )
+                          : Icon(
+                              Icons.favorite_border,
+                              color: Colors.red,
+                            ),
                       onPressed: () {
                         setState(() {
                           _isFav = !_isFav;
@@ -197,9 +221,45 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 height: 10.0,
               ),
               Container(
-                child: Text('Similar Products',
-                    style:
-                        TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text('Similar Products',
+                        style: TextStyle(
+                            fontSize: 14.0, fontWeight: FontWeight.bold)),
+                    GestureDetector(
+                      onTap: () {
+                        if (widget.category == 'Saree') {
+                          Navigator.pushNamed(context, SareePage.id);
+                        }
+                        if (widget.category == 'Blouse') {
+                          Navigator.pushNamed(context, BlousePage.id);
+                        }
+                        if (widget.category == 'Top') {
+                          Navigator.pushNamed(context, TopPage.id);
+                        }
+                        if (widget.category == 'Trouser') {
+                          Navigator.pushNamed(context, TrouserPage.id);
+                        }
+                      },
+                      child: Text('More..',
+                          style: TextStyle(
+                              fontSize: 10.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red)),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 5.0),
+              Container(
+                padding: EdgeInsets.all(20.0),
+                width: MediaQuery.of(context).size.width,
+                height: 250.0,
+                child: ProductListHorizontalView(
+                  category: widget.category,
+                  docId: widget.docID,
+                ),
               ),
             ],
           ),

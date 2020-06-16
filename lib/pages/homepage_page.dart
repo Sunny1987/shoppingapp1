@@ -27,6 +27,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
           backgroundColor: Colors.red,
           elevation: 0.0,
           actions: <Widget>[
+            
+            SizedBox(width: 60.0),
             IconButton(
                 icon: Icon(Icons.settings_power),
                 onPressed: () {
@@ -37,23 +39,21 @@ class _HomePageScreenState extends State<HomePageScreen> {
         drawer: MyDrawer(
             // model: model,
             ),
-        body:  CategoryWidget(),
+        body: CategoryWidget(),
       ),
     );
   }
 }
 
 class CategoryWidget extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     return ListView(
       children: <Widget>[
         Container(
-          padding: EdgeInsets.only(left: 50.0, top: 20.0),
+          padding: EdgeInsets.only(left: 60.0, top: 20.0),
           child: Text(
-            'Indian Saree Variety',
+            'Mother\'s Collection',
             style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
           ),
         ),
@@ -71,8 +71,6 @@ class CategoryWidget extends StatelessWidget {
 }
 
 class TrouserCardWidget extends StatelessWidget {
- 
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -102,8 +100,7 @@ class TrouserCardWidget extends StatelessWidget {
             child: Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
-              decoration:
-                  BoxDecoration(color: Colors.grey.withOpacity(0.5)),
+              decoration: BoxDecoration(color: Colors.grey.withOpacity(0.5)),
               child: Center(
                 child: Text(
                   "Trousers",
@@ -122,7 +119,6 @@ class TrouserCardWidget extends StatelessWidget {
 }
 
 class BlouseCardWidget extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -152,8 +148,7 @@ class BlouseCardWidget extends StatelessWidget {
             child: Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
-              decoration:
-                  BoxDecoration(color: Colors.grey.withOpacity(0.5)),
+              decoration: BoxDecoration(color: Colors.grey.withOpacity(0.5)),
               child: Center(
                 child: Text(
                   "Blouse",
@@ -172,8 +167,6 @@ class BlouseCardWidget extends StatelessWidget {
 }
 
 class TopsCardWidget extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -203,8 +196,7 @@ class TopsCardWidget extends StatelessWidget {
             child: Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
-              decoration:
-                  BoxDecoration(color: Colors.grey.withOpacity(0.5)),
+              decoration: BoxDecoration(color: Colors.grey.withOpacity(0.5)),
               child: Center(
                 child: Text(
                   "Tops",
@@ -223,8 +215,6 @@ class TopsCardWidget extends StatelessWidget {
 }
 
 class SareeCardWidget extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -255,8 +245,7 @@ class SareeCardWidget extends StatelessWidget {
             child: Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
-              decoration:
-                  BoxDecoration(color: Colors.grey.withOpacity(0.5)),
+              decoration: BoxDecoration(color: Colors.grey.withOpacity(0.5)),
               child: Center(
                 child: Text(
                   "Sarees",
