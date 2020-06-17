@@ -8,6 +8,7 @@ import 'package:testapp1/pages/homepage_page.dart';
 import 'package:testapp1/pages/product_details_page.dart';
 import 'package:testapp1/services/auth_service.dart';
 import 'package:testapp1/services/main_service.dart';
+import 'package:testapp1/style/mystrings.dart';
 import 'package:testapp1/views/blouseview.dart';
 import 'package:testapp1/views/sareeview.dart';
 import 'package:testapp1/views/topview.dart';
@@ -19,10 +20,16 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   // This widget is the root of your application.
 
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   final MainService mainService = MainService();
+
   @override
   Widget build(BuildContext context) {
     return ScopedModel<MainService>(
@@ -31,7 +38,7 @@ class MyApp extends StatelessWidget {
         value: AuthService().user,
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Mother\'s Collection',
+          title: appTitle,
           theme: ThemeData(
             primarySwatch: Colors.blue,
             visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -52,3 +59,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+

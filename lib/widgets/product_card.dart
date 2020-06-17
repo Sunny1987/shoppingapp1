@@ -220,12 +220,29 @@ class _ProductCardState extends State<ProductCard> {
                             IconButton(
                               onPressed: () {
                                 print('cart pressed');
+                                map.forEach((key, value) {
+                                  if (value.image == widget.image) {
+                                    setState(() {
+                                      docId = key;
+                                    });
+                                    
+                                  }
+                                });
+                                model.uploadUserCart(
+                                    user.uid,
+                                    widget.name,
+                                    widget.description,
+                                    widget.price,
+                                    widget.discount,
+                                    '1',
+                                    //docId,
+                                    widget.image);
                               },
                               icon: Icon(
-                                Icons.shopping_cart,
+                                Icons.add_shopping_cart,
                                 size: 25.0,
                               ),
-                              color: Colors.redAccent,
+                              color: Colors.black54,
                             )
                           ],
                         ),

@@ -152,4 +152,34 @@ class AuthService extends Model {
       print(e.toString());
     }
   }
+
+  void uploadUserCart(String uid, String name, String description,
+      String price, String discount,String quantity, String image) async {
+    try {
+      await Firestore.instance
+          .collection('user_cart')
+          .document()
+          .setData({
+        'id': uid,
+        'name': name,
+        'description': description,
+        'price': price,
+        'discount': discount,
+        'quantity': quantity,
+        //'docId': docId,
+        'image': image,
+        'createdAt': FieldValue.serverTimestamp()
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+ Future<QuerySnapshot> getUserCart(AppUser user) async {
+    return await Firestore.instance
+        .collection('user_cart')
+        .where('id', isEqualTo: '${user.uid}')
+        .getDocuments();
+  }
+
 }

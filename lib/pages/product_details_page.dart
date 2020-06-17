@@ -1,8 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:scoped_model/scoped_model.dart';
 import 'package:testapp1/models/favoutites_model.dart';
 import 'package:testapp1/models/user_model.dart';
 import 'package:testapp1/pages/homepage_page.dart';
+import 'package:testapp1/pages/product_cart.dart';
+import 'package:testapp1/pages/product_pic_page.dart';
 import 'package:testapp1/services/main_service.dart';
+import 'package:testapp1/style/mystrings.dart';
 import 'package:testapp1/views/blouseview.dart';
 import 'package:testapp1/views/sareeview.dart';
 import 'package:testapp1/views/topview.dart';
@@ -43,7 +49,22 @@ class ProductDetailPage extends StatefulWidget {
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
   bool _isFav = false;
-  String docId ='';
+  String docId = '';
+  int _quantity = 0;
+  num _count = 0;
+
+  getUserCartCount(
+    QuerySnapshot snapshot,
+    AppUser user,
+  ) async {
+    //var snapshot = await model.getFavourites(user);
+
+    var docs = await snapshot.documents;
+    List list =
+        docs.map((document) => Favourites.fromSnapshot(document)).toList();
+
+    return list.length;
+  }
 
   @override
   void initState() {
@@ -53,6 +74,22 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     } else {
       _isFav = false;
     }
+  }
+
+  @override
+  void didChangeDependencies() async{
+    super.didChangeDependencies();
+    AppUser user = Provider.of<AppUser>(context);
+    final snapshot = await Firestore.instance
+        .collection('user_cart')
+        .where('id', isEqualTo: '${user.uid}')
+        .getDocuments();
+    num count  = await getUserCartCount(snapshot,user);
+    setState(() {
+      _count = count;
+    });
+    print('cart count: $_count');
+    
   }
 
   @override
@@ -67,11 +104,47 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 onTap: () {
                   Navigator.pushNamed(context, HomePageScreen.id);
                 },
-                child: Center(child: Text('Mother\s Collection',style: TextStyle(
-                  fontSize:18.0,
-                ),))),
+                child: Center(
+                    child: Text(
+                  '$appTitle',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                  ),
+                ))),
             SizedBox(width: 60.0),
-            IconButton(icon: Icon(Icons.shopping_cart), onPressed: () {})
+            Stack(
+              children: <Widget>[
+                IconButton(
+                    icon: Icon(Icons.shopping_cart),
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ProductCart()));
+                    }),
+                Positioned(
+                  right: 7,
+                  top: 5,
+                  child: Container(
+                    padding: EdgeInsets.all(2),
+                    decoration: new BoxDecoration(
+                      color: Colors.yellow,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    constraints: BoxConstraints(
+                      minWidth: 16,
+                      minHeight: 16,
+                    ),
+                    child: Text(
+                      '$_count',
+                      style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 8,
+                          fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ],
+            )
           ],
         ),
         drawer: MyDrawer(),
@@ -82,14 +155,22 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               SizedBox(
                 height: 20.0,
               ),
-              Container(
-                padding:
-                    EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20.0),
-                width: MediaQuery.of(context).size.width * 0.6,
-                height: MediaQuery.of(context).size.width * 0.7,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: NetworkImage(widget.image), fit: BoxFit.fill)),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => ProductPicPage(
+                            image: widget.image,
+                          )));
+                },
+                child: Container(
+                  padding: EdgeInsets.only(
+                      left: 20, right: 20, top: 20, bottom: 20.0),
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  height: MediaQuery.of(context).size.width * 0.7,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: NetworkImage(widget.image), fit: BoxFit.fill)),
+                ),
               ),
               SizedBox(
                 height: 20.0,
@@ -136,11 +217,23 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        IconButton(icon: Icon(Icons.add), onPressed: () {}),
+                        IconButton(
+                            icon: Icon(Icons.add),
+                            onPressed: () {
+                              setState(() {
+                                _quantity = _quantity + 1;
+                              });
+                            }),
                         //SizedBox(height: 10.0),
-                        Text('0'),
+                        Text('$_quantity'),
                         //SizedBox(height: 10.0),
-                        IconButton(icon: Icon(Icons.remove), onPressed: () {})
+                        IconButton(
+                            icon: Icon(Icons.remove),
+                            onPressed: () {
+                              setState(() {
+                                _quantity = _quantity - 1;
+                              });
+                            })
                       ],
                     ),
                   )
@@ -164,7 +257,24 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       ),
                     ),
                   ),
-                  IconButton(icon: Icon(Icons.shopping_cart), onPressed: () {}),
+                  ScopedModelDescendant<MainService>(
+                    builder: (BuildContext context, Widget child,
+                        MainService model) {
+                      return IconButton(
+                          icon: Icon(Icons.add_shopping_cart),
+                          onPressed: () {
+                            model.uploadUserCart(
+                                widget.user.uid,
+                                widget.name,
+                                widget.description,
+                                widget.price,
+                                widget.discount,
+                                _quantity == 0 ? '1' : '$_quantity',
+                                //docId,
+                                widget.image);
+                          });
+                    },
+                  ),
                   IconButton(
                       icon: _isFav
                           ? Icon(
