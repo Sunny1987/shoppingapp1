@@ -25,6 +25,7 @@ class ProductCard extends StatefulWidget {
   final String discount;
   final String image;
   final String category;
+  final MainService model;
   //static DocumentSnapshot data;
 
   ProductCard(
@@ -33,6 +34,7 @@ class ProductCard extends StatefulWidget {
       this.price,
       this.discount,
       this.image,
+      this.model,
       this.category});
 
   @override
